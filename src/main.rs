@@ -1,14 +1,17 @@
 use std::io::{stdout, Write, BufWriter};
-//use std::{thread, time};
+use std::{thread, time};
+
 fn main() {
     println!("Hello, world!");
-    println!("Hollo, world!");
-    let out = stdout();
-    let mut out = BufWriter::new(out.lock());
-    //let ten_millis = time::Duration::from_millis(100);
-    for _ in 0..10 {
-        out.write(b"\x1B[2J").unwrap();
-        out.write(b"yes\n").unwrap();
-        //thread::sleep(ten_millis);
+    let ten_millis = time::Duration::from_millis(100);
+    for i in 0..10 {
+        thread::sleep(ten_millis);
+        print!("\rHollo, world!1");
+        print!("\rHollo, world!2");
+        print!("\n{}", i);
+        stdout().write(b"\x1B[2J").unwrap();
+        //stdout().flush();
+        //stdio::clear();
     }
 }
+
