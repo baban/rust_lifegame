@@ -7,5 +7,6 @@ fn main() {
     let mut out = BufWriter::new(out.lock());
     for _ in 0..10 {
         out.write(b"yes\n").unwrap();
+        out.write(0x7f).unwrap();
     }
 }
