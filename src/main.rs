@@ -2,8 +2,7 @@ use std::io::{stdout, Write, BufWriter};
 use std::{thread, time};
 
 fn main() {
-    //println!("Hello, world!");
-    let ten_millis = time::Duration::from_millis(100);
+    let ten_millis = time::Duration::from_millis(200);
     let mut table = set_init_table();
     // table 定義
     for i in 1..100 {
@@ -39,18 +38,18 @@ fn init_data() -> Vec<Vec<i32>> {
 }
 
 fn print_table(generation: i32, table: &Vec<i32>) {
-    print!("\x1B[2J");
-    println!("generation: {}", generation);
+    let mut s = format!("generation: {}\n", generation);
     for i in 0..25 {
         for j in 0..25 {
             if table[j * 25 + i] == 1 {
-                print!("{} ", "*");
+                s += "* ";
             } else {
-                print!("{} ", "-");
+                s += "- ";
             }
         }
-        println!("");
+        s += "\n";
     }
+    println!("\x1B[2J{}", s);
 }
 
 fn calc(table: &Vec<i32>) -> Vec<i32> {
