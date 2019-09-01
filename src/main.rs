@@ -3,7 +3,7 @@ use std::{thread, time};
 
 fn main() {
     let ten_millis = time::Duration::from_millis(200);
-    let mut table = set_init_table();
+    let mut table = set_galaxy_table();
     // table 定義
     for i in 1..100 {
         // table 表示
@@ -14,9 +14,15 @@ fn main() {
     }
 }
 
-fn set_init_table() -> Vec<i32> {
+fn set_beacon_table() -> Vec<i32> {
     let mut table = vec![0; 25*25];
-    let data = init_data();
+    let data = vec![
+        vec![0,0,0,0,0,0],
+        vec![0,1,1,0,0,0],
+        vec![0,1,1,0,0,0],
+        vec![0,0,0,1,1,0],
+        vec![0,0,0,1,1,0]
+    ];
     for i in 0..5 {
         for j in 0..5 {
             table[(j * 25 + i) as usize] = data[i][j];
@@ -26,15 +32,31 @@ fn set_init_table() -> Vec<i32> {
     return table;
 }
 
-fn init_data() -> Vec<Vec<i32>> {
+fn set_galaxy_table() -> Vec<i32> {
+    let mut table = vec![0; 25*25];
     let data = vec![
-        vec![0,0,0,0,0,0],
-        vec![0,1,1,0,0,0],
-        vec![0,1,1,0,0,0],
-        vec![0,0,0,1,1,0],
-        vec![0,0,0,1,1,0]
+        vec![0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        vec![0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        vec![0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        vec![0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        vec![0,0,0,1,1,0,1,1,1,1,1,1,0,0,0],
+        vec![0,0,0,1,1,0,1,1,1,1,1,1,0,0,0],
+        vec![0,0,0,1,1,0,0,0,0,0,0,0,0,0,0],
+        vec![0,0,0,1,1,0,0,0,0,0,1,1,0,0,0],
+        vec![0,0,0,1,1,0,0,0,0,0,1,1,0,0,0],
+        vec![0,0,0,1,1,0,0,0,0,0,1,1,0,0,0],
+        vec![0,0,0,0,0,0,0,0,0,0,1,1,0,0,0],
+        vec![0,0,0,1,1,1,1,1,1,0,1,1,0,0,0],
+        vec![0,0,0,1,1,1,1,1,1,0,1,1,0,0,0],
+        vec![0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     ];
-    return data;
+    for i in 0..14 {
+        for j in 0..13 {
+            table[(j * 25 + i) as usize] = data[i][j];
+        }
+    }
+
+    return table;
 }
 
 fn print_table(generation: i32, table: &Vec<i32>) {
@@ -50,16 +72,18 @@ fn print_table(generation: i32, table: &Vec<i32>) {
         s += "\n";
     }
     println!("\x1B[2J{}", s);
+    // println!("{}", s);
 }
 
 fn calc(table: &Vec<i32>) -> Vec<i32> {
     let mut table2 = vec![0; 25*25];
     for i in 0..25 {
         for j in 0..25 {
-            let c = count_round(&table, i, j);
+            let c = count_round(&table, j, i);
             let state = cell_state(table[(j * 25 + i) as usize], c);
             table2[(j * 25 + i) as usize] = state;
         }
+        // println!("");
     }
     return table2;
 }
@@ -78,7 +102,7 @@ fn count_round(table: &Vec<i32>, w: i32, h: i32) -> i32 {
             c += 1;
         }
     }
-    //print!("{} ",c);
+    // print!("{} ",c);
     return c;
 }
 
