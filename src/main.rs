@@ -6,7 +6,7 @@ fn main() {
     let ten_millis = time::Duration::from_millis(100);
     let mut table = set_init_table();
     // table 定義
-    for i in 1..2 {
+    for i in 1..100 {
         // table 表示
         print_table(i, &table);
         // 世代計算
@@ -38,23 +38,16 @@ fn init_data() -> Vec<Vec<i32>> {
     return data;
 }
 
-fn set_grider(table: Vec<i32>) -> Vec<i32> {
-
-    return table;
-}
-
 fn print_table(generation: i32, table: &Vec<i32>) {
-    //print!("\x1B[2J");
+    print!("\x1B[2J");
     println!("generation: {}", generation);
     for i in 0..25 {
         for j in 0..25 {
             if table[j * 25 + i] == 1 {
                 print!("{} ", "*");
-
             } else {
                 print!("{} ", "-");
             }
-
         }
         println!("");
     }
@@ -73,10 +66,21 @@ fn calc(table: &Vec<i32>) -> Vec<i32> {
 }
 
 fn count_round(table: &Vec<i32>, w: i32, h: i32) -> i32 {
-    for i in 0..7 {
-
+    let directions = vec![
+        (-25 - 1), -25, (-25 +1),
+        -1, 1,
+        (25 - 1), 25, (25 +1),
+    ];
+    let start = w * 25 + h;
+    let mut c = 0;
+    for d in directions {
+        let p = start + d;
+        if(0 <= p && p < 25 * 25 && table[p as usize] == 1) {
+            c += 1;
+        }
     }
-    return 0;
+    //print!("{} ",c);
+    return c;
 }
 
 fn cell_state(state: i32, c: i32) -> i32 {
