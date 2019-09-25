@@ -9,7 +9,7 @@ fn main() {
         // table 表示
         print_table(i, &table);
         // 世代計算
-        table = calc(&table);
+        calc(&mut table);
         thread::sleep(ten_millis);
     }
 }
@@ -75,17 +75,15 @@ fn print_table(generation: i32, table: &Vec<i32>) {
     // println!("{}", s);
 }
 
-fn calc(table: &Vec<i32>) -> Vec<i32> {
-    let mut table2 = vec![0; 25*25];
+fn calc(table: &mut Vec<i32>) {
     for i in 0..25 {
         for j in 0..25 {
             let c = count_round(&table, j, i);
             let state = cell_state(table[(j * 25 + i) as usize], c);
-            table2[(j * 25 + i) as usize] = state;
+            table[(j * 25 + i) as usize] = state;
         }
         // println!("");
     }
-    return table2;
 }
 
 fn count_round(table: &Vec<i32>, w: i32, h: i32) -> i32 {
